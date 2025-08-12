@@ -1,0 +1,279 @@
+# Поместите копию этого конфига в ~/.aerospace.toml
+# После этого вы можете редактировать ~/.aerospace.toml по своему усмотрению
+# 
+# Также можно разместить конфиг в ${XDG_CONFIG_HOME}/aerospace/aerospace.toml
+# (обычно это ~/.config/aerospace/aerospace.toml)
+
+# Не обязательно копировать все ключи в ваш конфиг.
+# Если ключ отсутствует в вашем конфиге, "default-config.toml" будет использоваться как запасной вариант
+
+# Вы можете использовать это для добавления команд, выполняемых после входа в сеанс пользователя macOS.
+# 'start-at-login' должен быть 'true', чтобы 'after-login-command' работал
+# Доступные команды: https://nikitabobko.github.io/AeroSpace/commands
+after-login-command = []
+
+# Вы можете использовать это для добавления команд, выполняемых после запуска AeroSpace.
+# 'after-startup-command' выполняется после 'after-login-command'
+# Доступные команды: https://nikitabobko.github.io/AeroSpace/commands
+after-startup-command = [
+    # JankyBorders имеет встроенное обнаружение уже запущенного процесса,
+    # поэтому он не будет запущен дважды при перезапуске AeroSpace
+    'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar',
+    'exec-and-forget /opt/homebrew/opt/borders/bin/borders active_color="glow(0xa020f0ff)" inactive_color=0x20494d64 width=8.0'
+]
+
+exec-on-workspace-change = [
+    '/bin/bash',
+    '-c',
+    '/opt/homebrew/opt/sketchybar/bin/sketchybar --trigger aerospace_workspace_change AEROSPACE_FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE AEROSPACE_PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE',
+]
+
+# Запускать AeroSpace при входе в систему
+start-at-login = true
+
+# Нормализации. См.: https://nikitabobko.github.io/AeroSpace/guide#normalization
+enable-normalization-flatten-containers = false
+enable-normalization-opposite-orientation-for-nested-containers = false
+
+# См.: https://nikitabobko.github.io/AeroSpace/guide#layouts
+# 'accordion-padding' указывает размер отступа accordion
+# Вы можете установить 0, чтобы отключить функцию отступа
+accordion-padding = 0 # отключено из-за pycharm multiwindows
+
+# Возможные значения: tiles|accordion
+default-root-container-layout = 'tiles'
+
+# Возможные значения: horizontal|vertical|auto
+# 'auto' означает: широкий monitor (что угодно шире, чем выше) получает horizontal ориентацию,
+#                  высокий monitor (что угодно выше, чем шире) получает vertical ориентацию
+default-root-container-orientation = 'auto'
+
+# Возможные значения: (qwerty|dvorak)
+# См. https://nikitabobko.github.io/AeroSpace/guide#key-mapping
+key-mapping.preset = 'qwerty'
+
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+on-focus-changed = ['move-mouse window-lazy-center']
+
+# Промежутки между окнами (inner-*) и между краями монитора (outer-*).
+# Возможные значения:
+# - Постоянная:     gaps.outer.top = 8
+# - Для монитора:   gaps.outer.top = [{ monitor.main = 16 }, { monitor."some-pattern" = 32 }, 24]
+#                  В этом примере 24 - это значение по умолчанию, когда нет совпадений.
+#                  Шаблон монитора такой же, как для 'workspace-to-monitor-force-assignment'.
+#                  См.: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
+# 
+# Чтобы посмотреть список всех мониторов, можно использовать команду:
+# aerospace list-monitors
+[workspace-to-monitor-force-assignment]
+# По умолчанию все workspace назначаются на main monitor Mac
+# Если у вас более одного монитора, укажите здесь назначения
+# Посмотреть мониторы aerospace list-monitors
+# 1 = 'main'
+# 2 = 'main'
+# 3 = 'main'
+# 4 = 'main'
+# 5 = 'main'
+6 = 2
+7 = 2
+8 = 2
+9 = 2
+10 = 'Acer ET221Q'
+
+[gaps]
+inner.horizontal = 10
+inner.vertical = 10
+outer.top = [{ monitor."main" = 5 }, 40]
+outer.left = 5
+outer.bottom = 5
+outer.right = 5
+
+# См. https://nikitabobko.github.io/AeroSpace/guide#exec-env-vars
+[exec] # Опять же, вам не нужно копировать все разделы конфигурации в ваш конфиг.
+inherit-env-vars = true # Если вы не трогаете раздел "exec",
+
+[exec.env-vars] # он вернется к "default-config.toml"
+PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
+
+# Объявление режима привязки 'main'
+# См.: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
+# Режим привязки 'main' должен всегда присутствовать
+[mode.main.binding]
+
+# Все возможные клавиши:
+# - Буквы:              a, b, c, ..., z
+# - Цифры:              0, 1, 2, ..., 9
+# - Цифры клавиатуры:   keypad0, keypad1, keypad2, ..., keypad9
+# - F-клавиши:          f1, f2, ..., f20
+# - Специальные клавиши: minus, equal, period, comma, slash, backslash, quote, semicolon, backtick,
+#                       leftSquareBracket, rightSquareBracket, space, enter, esc, backspace, tab
+# - Специальные клавиши keypad: keypadClear, keypadDecimalMark, keypadDivide, keypadEnter, keypadEqual,
+#                             keypadMinus, keypadMultiply, keypadPlus
+# - Стрелки:            left, down, up, right
+
+# Все возможные модификаторы: cmd, alt, ctrl, shift
+
+# Все возможные команды: https://nikitabobko.github.io/AeroSpace/commands
+
+# Вы можете раскомментировать эту строку, чтобы открыть терминал с помощью сочетания клавиш alt + enter
+# См.: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
+# alt-enter = 'exec-and-forget open -n /System/Applications/Utilities/Terminal.app'
+
+# См.: https://nikitabobko.github.io/AeroSpace/commands#layout
+alt-slash = 'layout tiles horizontal vertical'
+alt-comma = 'layout accordion horizontal vertical'
+
+# См.: https://nikitabobko.github.io/AeroSpace/commands#focus
+alt-h = 'focus left --boundaries all-monitors-outer-frame'
+alt-j = 'focus down --boundaries all-monitors-outer-frame'
+alt-k = 'focus up --boundaries all-monitors-outer-frame'
+alt-l = 'focus right --boundaries all-monitors-outer-frame'
+
+# См.: https://nikitabobko.github.io/AeroSpace/commands#move
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+
+# См.: https://nikitabobko.github.io/AeroSpace/commands#resize
+alt-shift-minus = 'resize smart -50'
+alt-shift-equal = 'resize smart +50'
+
+# См.: https://nikitabobko.github.io/AeroSpace/commands#workspace
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
+alt-7 = 'workspace 7'
+alt-8 = 'workspace 8'
+alt-9 = 'workspace 9'
+alt-0 = 'workspace 10'
+
+# См.: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
+alt-shift-1 = ['move-node-to-workspace 1', 'workspace 1']
+alt-shift-2 = ['move-node-to-workspace 2', 'workspace 2']
+alt-shift-3 = ['move-node-to-workspace 3', 'workspace 3']
+alt-shift-4 = ['move-node-to-workspace 4', 'workspace 4']
+alt-shift-5 = ['move-node-to-workspace 5', 'workspace 5']
+alt-shift-6 = ['move-node-to-workspace 6', 'workspace 6']
+alt-shift-7 = ['move-node-to-workspace 7', 'workspace 7']
+alt-shift-8 = ['move-node-to-workspace 8', 'workspace 8']
+alt-shift-9 = ['move-node-to-workspace 9', 'workspace 9']
+alt-shift-0 = ['move-node-to-workspace 10', 'workspace 10']
+
+# См.: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
+alt-tab = 'workspace-back-and-forth'
+# См.: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
+alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+# См.: https://nikitabobko.github.io/AeroSpace/commands#mode
+alt-shift-semicolon = 'mode service'
+
+# Объявление режима привязки 'service'.
+# См.: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
+
+# отключено скрытие окна
+# cmd-h = []
+# переключение между раскладками хангыль и английский
+
+[mode.service.binding]
+esc = [
+'reload-config', 
+'mode main',
+'exec-and-forget /opt/homebrew/opt/sketchybar/bin/sketchybar',
+'exec-and-forget /opt/homebrew/opt/borders/bin/borders active_color="glow(0xa020f0ff)" inactive_color=0x20494d64 width=8.0'
+] # перезагрузить конфиг и снова запустить
+r = ['flatten-workspace-tree', 'mode main'] # сбросить макет
+#s = ['layout sticky tiling', 'mode main'] # sticky ещё не поддерживается https://github.com/nikitabobko/AeroSpace/issues/2
+f = [
+    'layout floating tiling',
+    'mode main',
+] # Переключение между плавающим и плиточным макетом
+alt-shift-semicolon = [
+    'fullscreen',
+    'mode main',
+] # Переключение полноэкранного режима
+backspace = ['close-all-windows-but-current', 'mode main']
+
+alt-shift-h = ['join-with left', 'mode main']
+alt-shift-j = ['join-with down', 'mode main']
+alt-shift-k = ['join-with up', 'mode main']
+alt-shift-l = ['join-with right', 'mode main']
+
+
+# Секция для автоматического размещения окон приложений в определённых workspace
+[[on-window-detected]]
+if.app-id = 'com.tdesktop.Telegram'
+run = ['move-node-to-workspace 1']
+
+[[on-window-detected]]
+if.app-id = 'com.sublimetext.4'
+run = ['move-node-to-workspace 1']
+
+[[on-window-detected]]
+if.app-id = 'com.tdesktop.Telegram'
+run = ['move-node-to-workspace 1']
+
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+run = ['move-node-to-workspace 2']
+
+[[on-window-detected]]
+if.app-id = 'dev.warp.Warp-Stable'
+run = ['move-node-to-workspace 3']
+
+[[on-window-detected]]
+if.app-id = 'com.postmanlabs.mac'
+run = ['move-node-to-workspace 3']
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.Outlook'
+run = ['move-node-to-workspace 4']
+
+[[on-window-detected]]
+if.app-id = 'com.apple.reminders'
+run = ['move-node-to-workspace 4']
+
+[[on-window-detected]]
+if.app-id = 'net.kovidgoyal.calibre'
+run = ['move-node-to-workspace 5']
+
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = ['move-node-to-workspace 5']
+
+[[on-window-detected]]
+if.app-id = 'com.jetbrains.pycharm'
+run = ['move-node-to-workspace 6']
+
+# Приложения, которые всегда будут в плавающем режиме
+[[on-window-detected]]
+if.app-id = 'com.apple.weather'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'dev.yiguo.FoXray'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'ru.yandex.desktop.disk2'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'ru.yandex.desktop.disk.screenshots'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'net.ankiweb.dtop'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'org.m0k.transmission'
+run = ['layout floating']
+
+# Добавляем системный мониторинг в плавающем окне
+[[on-window-detected]]
+if.app-id = 'com.apple.ActivityMonitor'
+run = ['layout floating']
